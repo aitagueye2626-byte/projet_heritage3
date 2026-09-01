@@ -27,3 +27,31 @@ La branche `main` doit contenir une version fonctionnelle et stable du projet.
 Les nouvelles fonctionnalités doivent être développées dans des branches séparées avant d'être intégrées dans `main`.
 Cela permet d'éviter d'avoir une version principale cassée.
 
+Questions — Partie 1
+Pourquoi placer index.php dans un dossier public ?
+
+Le fichier index.php est placé dans le dossier public afin que seul le contenu destiné à être accessible par le navigateur soit exposé publiquement.
+
+
+Les fichiers contenant la logique métier, les informations de connexion à la base de données, les requêtes SQL et les classes internes restent en dehors du dossier public. Cela améliore la sécurité de l'application.
+Pourquoi toutes les requêtes devraient-elles passer par ce fichier ?
+
+public/index.php constitue le point d'entrée unique de l'application. Toutes les requêtes HTTP passent par ce fichier afin de centraliser leur traitement.
+
+Il permet notamment de charger automatiquement les classes, de récupérer la requête, de déterminer la route à utiliser et de transmettre la demande au contrôleur approprié.
+
+Cette organisation facilite également la maintenance et permet d'appliquer un contrôle commun à toutes les requêtes.
+Quels éléments ne devraient jamais se trouver dans le dossier public ?
+
+Le dossier public ne doit pas contenir :
+
+    les informations de connexion à la base de données ;
+    les mots de passe ;
+    les classes métier ;
+    les repositories ;
+    les services ;
+    les fichiers de configuration ;
+    les scripts SQL ;
+    les données sensibles ou fichiers internes de l'application.
+
+Seuls les fichiers qui doivent réellement être accessibles par le navigateur doivent être placés dans public.

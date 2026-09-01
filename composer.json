@@ -3,13 +3,13 @@
     "description": "heritage",
     "autoload": {
         "psr-4": {
-      "App\\Core\\": "src/Core/",
-      "App\\Model\\": "src/Repository/",
-      "App\\Http\\": "src/Controller/",
-      "App\\Entity\\": "src/Entity/",
-      "App\\Service\\": "src/Service/",
-      "App\\DTO\\": "src/DTO/" 
-      
+            "App\\Container\\": "src/Container/",
+            "App\\Model\\": "src/Repository/",
+            "App\\Http\\": "src/Controller/",
+            "App\\Entity\\": "src/Entity/",
+            "App\\Service\\": "src/Service/",
+            "App\\DTO\\": "src/DTO/",
+            "App\\Router\\": "src/Router/"
         }
     },
     "authors": [

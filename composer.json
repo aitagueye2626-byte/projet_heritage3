@@ -1,0 +1,22 @@
+{
+    "name": "aita-gueye/projet_heritage4",
+    "description": "heritage",
+    "autoload": {
+        "psr-4": {
+      "App\\Core\\": "src/Core/",
+      "App\\Model\\": "src/Repository/",
+      "App\\Http\\": "src/Controller/",
+      "App\\Entity\\": "src/Entity/",
+      "App\\Service\\": "src/Service/",
+      "App\\DTO\\": "src/DTO/" 
+      
+        }
+    },
+    "authors": [
+        {
+            "name": "aitagueye-byyte",
+            "email": "aitagueye2626@gmail.com"
+        }
+    ],
+    "require": {}
+}

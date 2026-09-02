@@ -14,7 +14,7 @@ final class Database
 
     private function __construct()
     {
-        $config = require dirname(__DIR__, 2) . '/config/database.php';
+        $config = require dirname(__DIR__);
 
         $this->host     = $config['host'];
         $this->dbName   = $config['dbname'];

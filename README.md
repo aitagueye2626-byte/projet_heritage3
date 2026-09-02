@@ -55,3 +55,29 @@ Le dossier public ne doit pas contenir :
     les données sensibles ou fichiers internes de l'application.
 
 Seuls les fichiers qui doivent réellement être accessibles par le navigateur doivent être placés dans public.
+# Partie 3 — Préparer la persistance
+
+## Questions
+
+**1. Quelle classe doit être responsable de la connexion ?**
+
+`Database` (dans `src/Container/`), et elle seule. Aucune autre classe (Repository,
+Service, Controller) ne doit ouvrir sa propre connexion PDO — elles passent toutes
+par `Database::getInstance()->getConnection()`.
+
+**2. Faut-il créer une nouvelle connexion pour chaque requête SQL ?**
+
+Non. Ouvrir une connexion PDO est coûteux. `Database` est un Singleton :
+`getInstance()` crée la connexion une seule fois, puis renvoie toujours la même
+ensuite — toutes les requêtes partagent cette unique connexion.
+
+**3. Où placer les identifiants de connexion ?**
+
+Dans un fichier de configuration séparé du code source (`config/database.php`),
+jamais écrits en dur dans une classe PHP.
+
+**4. Pourquoi utiliser PDO ?**
+
+- Sécurité : requêtes préparées, protection contre les injections SQL
+- Portabilité : fonctionne avec plusieurs moteurs de base de données
+- Gestion d'erreurs unifiée via les exceptions PHP

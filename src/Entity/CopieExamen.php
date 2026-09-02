@@ -11,10 +11,10 @@ class CopieExamen extends AbstractDocument
     private \DateTime $dateLimite;
 
     public function __construct(
-        DateTime $dateDepot,
+        \DateTime $dateDepot,
         float $noteBrute,
         bool $penaliteAppliquee,
-        DateTime $dateLimite,
+        \DateTime $dateLimite,
         ?int $id = null
     ) {
         parent::__construct($dateDepot, $id);

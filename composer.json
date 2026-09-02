@@ -18,5 +18,7 @@
             "email": "aitagueye2626@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^5.7"
+    }
 }

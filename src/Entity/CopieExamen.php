@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use App\Service\CalculNoteInterface;
 
 class CopieExamen extends AbstractDocument
 {
@@ -9,12 +11,14 @@ class CopieExamen extends AbstractDocument
     private float $noteFinale;
     private bool $penaliteAppliquee;
     private \DateTime $dateLimite;
+    private CalculNoteInterface $calculNote;
 
     public function __construct(
-        \DateTime $dateDepot,
+        DateTime $dateDepot,
         float $noteBrute,
         bool $penaliteAppliquee,
-        \DateTime $dateLimite,
+        DateTime $dateLimite,
+        CalculNoteInterface $calculNote,
         ?int $id = null
     ) {
         parent::__construct($dateDepot, $id);
@@ -23,15 +27,17 @@ class CopieExamen extends AbstractDocument
         $this->noteBrute = $noteBrute;
         $this->penaliteAppliquee = $penaliteAppliquee;
         $this->dateLimite = $dateLimite;
+        $this->calculNote = $calculNote;
 
         $this->calculerNoteFinale();
     }
 
     public function calculerNoteFinale(): void
     {
-        $this->noteFinale = $this->penaliteAppliquee
-            ? max(0, $this->noteBrute - 2)
-            : $this->noteBrute;
+        $this->noteFinale = $this->calculNote->calculer(
+            $this->noteBrute,
+            $this->penaliteAppliquee
+        );
     }
 
     public function getNoteBrute(): float

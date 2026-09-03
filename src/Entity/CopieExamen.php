@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTime;
 use App\Service\CalculNoteInterface;
 
 class CopieExamen extends AbstractDocument
@@ -17,7 +16,7 @@ class CopieExamen extends AbstractDocument
         DateTime $dateDepot,
         float $noteBrute,
         bool $penaliteAppliquee,
-        DateTime $dateLimite,
+        \DateTime $dateLimite,
         CalculNoteInterface $calculNote,
         ?int $id = null
     ) {
@@ -68,12 +67,12 @@ class CopieExamen extends AbstractDocument
         $this->calculerNoteFinale();
     }
 
-    public function getDateLimite(): DateTime
+    public function getDateLimite(): \DateTime
     {
         return $this->dateLimite;
     }
 
-    public function setDateLimite(DateTime $dateLimite): void
+    public function setDateLimite(\DateTime $dateLimite): void
     {
         $this->dateLimite = $dateLimite;
     }

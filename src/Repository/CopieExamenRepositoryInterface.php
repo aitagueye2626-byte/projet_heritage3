@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Repository;
+namespace App\Model;
 
+use PDO;
+use DateTime;
 use App\Entity\CopieExamen;
+use App\Service\CalculNoteAvecRetardService;
 
 class PdoCopieExamenRepository implements CopieExamenRepositoryInterface
 {
     public function __construct(
-        private \PDO $pdo
+        private PDO $pdo
     ) {
     }
 
@@ -33,54 +36,77 @@ class PdoCopieExamenRepository implements CopieExamenRepositoryInterface
         $statement = $this->pdo->prepare($sql);
 
         $statement->execute([
-            ':date_depot' => $copie->getDateDepot()->format('Y-m-d H:i:s'),
+            ':date_depot' => $copie->getDateDepot()
+                ->format('Y-m-d H:i:s'),
+
             ':note_brute' => $copie->getNoteBrute(),
+
             ':note_finale' => $copie->getNoteFinale(),
+
             ':penalite_appliquee' => $copie->isPenaliteAppliquee(),
-            ':date_limite' => $copie->getDateLimite()->format('Y-m-d H:i:s'),
+
+            ':date_limite' => $copie->getDateLimite()
+                ->format('Y-m-d H:i:s'),
         ]);
 
         return $copie;
     }
 
-   public function findAll(): array
-{
-    $sql = "SELECT * FROM copie_examen ORDER BY id";
+    public function findAll(): array
+    {
+        $sql = "
+            SELECT *
+            FROM copie_examen
+            ORDER BY id
+        ";
 
-    $statement = $this->pdo->prepare($sql);
+        $statement = $this->pdo->prepare($sql);
 
-    $statement->execute();
+        $statement->execute();
 
-    $resultats = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $resultats = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $copies = [];
+        $copies = [];
 
-    foreach ($resultats as $resultat) {
-        $copies[] = $this->mapperCopie($resultat);
+        foreach ($resultats as $resultat) {
+            $copies[] = $this->mapperCopie($resultat);
+        }
+
+        return $copies;
     }
 
-    return $copies;
-}
-   public function findById(int $id): ?CopieExamen
-{
-    $sql = "
-        SELECT * 
-        FROM copie_examen
-        WHERE id = :id
-    ";
+    public function findById(int $id): ?CopieExamen
+    {
+        $sql = "
+            SELECT *
+            FROM copie_examen
+            WHERE id = :id
+        ";
 
-    $statement = $this->pdo->prepare($sql);
+        $statement = $this->pdo->prepare($sql);
 
-    $statement->execute([
-        ':id' => $id
-    ]);
+        $statement->execute([
+            ':id' => $id
+        ]);
 
-    $resultat = $statement->fetch(PDO::FETCH_ASSOC);
+        $resultat = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if (!$resultat) {
-        return null;
+        if (!$resultat) {
+            return null;
+        }
+
+        return $this->mapperCopie($resultat);
     }
 
-    return $this->mapperCopie($resultat);
+    private function mapperCopie(array $data): CopieExamen
+    {
+        return new CopieExamen(
+            new DateTime($data['date_depot']),
+            (float) $data['note_brute'],
+            (bool) $data['penalite_appliquee'],
+            new DateTime($data['date_limite']),
+            new CalculNoteAvecRetardService(),
+            (int) $data['id']
+        );
     }
 }

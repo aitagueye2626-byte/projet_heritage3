@@ -2,15 +2,14 @@
 
 namespace App\Model;
 
-use PDO;
-use DateTime;
+
 use App\Entity\CopieExamen;
 use App\Service\CalculNoteAvecRetardService;
 
 class PdoCopieExamenRepository implements CopieExamenRepositoryInterface
 {
     public function __construct(
-        private PDO $pdo
+        private \PDO $pdo
     ) {
     }
 
@@ -101,10 +100,10 @@ class PdoCopieExamenRepository implements CopieExamenRepositoryInterface
     private function mapperCopie(array $data): CopieExamen
     {
         return new CopieExamen(
-            new DateTime($data['date_depot']),
+            new \DateTime($data['date_depot']),
             (float) $data['note_brute'],
             (bool) $data['penalite_appliquee'],
-            new DateTime($data['date_limite']),
+            new \DateTime($data['date_limite']),
             new CalculNoteAvecRetardService(),
             (int) $data['id']
         );

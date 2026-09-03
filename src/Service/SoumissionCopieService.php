@@ -18,4 +18,22 @@ class SoumissionCopieService
         $this->calculNoteService = $calculNoteService;
         $this->copieRepository = $copieRepository;
     }
+
+    public function soumettre(SoumettreCopieDTO $dto): CopieExamen
+    {
+        $copie = new CopieExamen(
+            $dto->titre,
+            $dto->etudiant,
+            $dto->noteBrute,
+            $dto->dateSoumission,
+            $dto->dateLimite
+        );
+
+        $noteFinale = $this->calculNoteService->calculer($copie);
+        $copie->setNoteFinale($noteFinale);
+
+        $this->copieRepository->save($copie);
+
+        return $copie;
+    }
 }
